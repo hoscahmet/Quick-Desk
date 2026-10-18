@@ -11,8 +11,9 @@
     "preview": "electron-vite preview",
     "pack": "electron-vite build && electron-builder --dir",
     "dist": "electron-vite build && electron-builder",
-    "dist:mas": "electron-vite build && electron-builder --mac mas",
-    "dist:dmg": "electron-vite build && electron-builder --mac dmg"
+    "dist:dmg": "electron-vite build && electron-builder --mac dmg",
+    "dist:win": "electron-vite build && electron-builder --win",
+    "dist:mas": "electron-vite build && electron-builder --mac mas"
   },
   "keywords": [
     "electron",
