@@ -13,7 +13,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[![Download QuickDesk](https://img.shields.io/badge/📥_Download_QuickDesk-Releases-2563eb?style=for-the-badge)](https://github.com/hosca/Quick-Desk/releases)
+[![Download QuickDesk](https://img.shields.io/badge/📥_Download_QuickDesk-Releases-2563eb?style=for-the-badge)](https://github.com/hoscahmet/Quick-Desk/releases)
 
 <br/>
 
@@ -104,7 +104,7 @@ Projeyi yerel ortamınızda çalıştırmak için:
 
 ```bash
 # 1. Depoyu klonlayın
-git clone https://github.com/hosca/Quick-Desk.git
+git clone https://github.com/hoscahmet/Quick-Desk.git
 cd Quick-Desk
 
 # 2. Bağımlılıkları yükleyin
