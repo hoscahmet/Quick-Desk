@@ -1,6 +1,7 @@
 import React from 'react'
 import { Plus, Copy, Trash2, FileText } from 'lucide-react'
 import { Note } from '../types'
+import { useTranslation } from '../i18n/LanguageContext'
 
 interface NotesTabProps {
   notes: Note[]
@@ -21,6 +22,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
   onDeleteNote,
   onToast
 }) => {
+  const { t } = useTranslation()
   const activeNote = notes.find((n) => n.id === activeNoteId) || notes[0]
 
   const charCount = activeNote?.content?.length || 0
@@ -30,11 +32,11 @@ export const NotesTab: React.FC<NotesTabProps> = ({
 
   const handleCopy = async () => {
     if (!activeNote || !activeNote.content) {
-      onToast('Kopyalanacak içerik bulunmuyor')
+      onToast(t('notes.noContentToCopy'))
       return
     }
     await window.api.copyToClipboard(activeNote.content)
-    onToast('Not panoya kopyalandı! 📋')
+    onToast(t('notes.copySuccess'))
   }
 
   return (
@@ -43,11 +45,11 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       <aside className="w-56 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0">
         <div className="flex items-center justify-between p-3 border-b border-slate-800">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-            Notlarım
+            {t('notes.myNotes')}
           </span>
           <button
             onClick={onAddNote}
-            title="Yeni Not Ekle"
+            title={t('notes.addNewNote')}
             className="p-1 rounded text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition"
           >
             <Plus className="w-4 h-4" />
@@ -68,10 +70,10 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 }`}
               >
                 <div className="text-xs font-medium truncate">
-                  {note.title || 'Başlıksız Not'}
+                  {note.title || t('notes.untitledNote')}
                 </div>
                 <div className="text-[10px] text-slate-500 truncate">
-                  {note.content ? note.content.slice(0, 40) : 'Boş not...'}
+                  {note.content ? note.content.slice(0, 40) : t('notes.emptyNote')}
                 </div>
               </div>
             )
@@ -88,23 +90,23 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 type="text"
                 value={activeNote.title}
                 onChange={(e) => onUpdateNote(activeNote.id, { title: e.target.value })}
-                placeholder="Not Başlığı..."
+                placeholder={t('notes.titlePlaceholder')}
                 className="bg-transparent text-sm font-semibold text-slate-100 outline-none flex-1 placeholder:text-slate-600"
               />
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-[11px] text-slate-500 mr-2">
-                  {charCount} karakter · {wordCount} kelime
+                  {t('notes.stats', { chars: charCount, words: wordCount })}
                 </span>
                 <button
                   onClick={handleCopy}
                   className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition text-[11.5px]"
                 >
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Kopyala</span>
+                  <span>{t('common.copy')}</span>
                 </button>
                 <button
                   onClick={() => onDeleteNote(activeNote.id)}
-                  title="Notu Sil"
+                  title={t('notes.deleteNote')}
                   className="p-1 rounded bg-slate-900 hover:bg-rose-950/60 border border-slate-800 hover:border-rose-800/50 text-slate-400 hover:text-rose-400 transition"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -115,14 +117,14 @@ export const NotesTab: React.FC<NotesTabProps> = ({
             <textarea
               value={activeNote.content}
               onChange={(e) => onUpdateNote(activeNote.id, { content: e.target.value })}
-              placeholder="Buraya notlarınızı yazmaya başlayın..."
+              placeholder={t('notes.contentPlaceholder')}
               className="flex-1 p-4 bg-transparent text-slate-200 font-sans text-xs sm:text-sm leading-relaxed resize-none outline-none placeholder:text-slate-600"
             />
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-2">
             <FileText className="w-8 h-8 opacity-40" />
-            <p className="text-xs">Görüntülenecek not seçilmedi</p>
+            <p className="text-xs">{t('notes.noNoteSelected')}</p>
           </div>
         )}
       </div>

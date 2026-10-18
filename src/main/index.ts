@@ -16,6 +16,9 @@ function ensureDataFile(): void {
   const filePath = getDataFilePath()
   if (!existsSync(filePath)) {
     const initialData = {
+      settings: {
+        language: 'tr'
+      },
       notes: [
         {
           id: 'note_1',

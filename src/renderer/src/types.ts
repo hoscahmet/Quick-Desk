@@ -1,3 +1,9 @@
+export type Language = 'tr' | 'en'
+
+export interface AppSettings {
+  language: Language
+}
+
 export interface Note {
   id: string
   title: string
@@ -23,6 +29,7 @@ export interface AppData {
   activeNoteId: string | null
   snippets: Snippet[]
   todos: Todo[]
+  settings?: AppSettings
 }
 
 export type TabType = 'notes' | 'snippets' | 'tools' | 'focus'

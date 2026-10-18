@@ -34,6 +34,11 @@ Bu proje, güncel endüstri standartları doğrultusunda **`electron-vite`**, **
 5. **⏱️ Pomodoro Odak Sayacı & Görev Takibi**:
    - 25 dk çalışma / 5 dk mola sayacı (Web Audio API sentezli yumuşak zil uyarısı).
    - Tamamlanan işlerin üzerini çizebileceğiniz dinamik yapılacaklar listesi.
+6. **🌐 Çift Dil Desteği (Türkçe & İngilizce)**:
+   - Header üzerinde anlık geçiş yapılabilen `[ TR | EN ]` dil değiştirici düğmesi.
+   - Tüm sekmeler, diyaloglar, araçlar ve toast bildirimlerinde eksiksiz yerelleştirme.
+   - Kullanıcı dil tercihinin Electron veri dosyasına ve `localStorage`'a kalıcı olarak kaydedilmesi.
+   - Metin dönüştürücüde ve zaman damgasında dile duyarlı yerel ayarlar (`tr-TR` ve `en-US`).
 
 ---
 
@@ -86,5 +91,8 @@ clever-hertz/
 │           ├── App.tsx
 │           ├── index.css   # Tailwind v4 stilleri
 │           ├── types.ts    # Veri tipleri
+│           ├── i18n/       # Çoklu dil (TR & EN) sözlük ve Context mimarisi
+│           │   ├── translations.ts
+│           │   └── LanguageContext.tsx
 │           └── components/ # UI Bileşenleri (Header, Nav, Notes, Snippets, Tools, Focus, Toast)
 ```

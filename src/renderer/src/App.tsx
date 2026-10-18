@@ -7,13 +7,19 @@ import { ToolsTab } from './components/ToolsTab'
 import { FocusTab } from './components/FocusTab'
 import { Toast } from './components/Toast'
 import { AppData, TabType, Note, Snippet } from './types'
+import { useTranslation } from './i18n/LanguageContext'
 
 export const App: React.FC = () => {
+  const { language, setLanguage, t } = useTranslation()
+
   const [data, setData] = useState<AppData>({
     notes: [],
     activeNoteId: null,
     snippets: [],
-    todos: []
+    todos: [],
+    settings: {
+      language
+    }
   })
 
   const [activeTab, setActiveTab] = useState<TabType>('notes')
@@ -39,6 +45,9 @@ export const App: React.FC = () => {
         const loaded = await window.api.getData()
         if (loaded) {
           setData(loaded)
+          if (loaded.settings?.language && loaded.settings.language !== language) {
+            setLanguage(loaded.settings.language)
+          }
         }
         const pinned = await window.api.isAlwaysOnTop()
         setIsPinned(pinned)
@@ -47,6 +56,21 @@ export const App: React.FC = () => {
     }
     load()
   }, [])
+
+  // Sync language changes into AppData for persistence
+  useEffect(() => {
+    if (!isLoadedRef.current) return
+    setData((prev) => {
+      if (prev.settings?.language === language) return prev
+      return {
+        ...prev,
+        settings: {
+          ...prev.settings,
+          language
+        }
+      }
+    })
+  }, [language])
 
   // Auto-save on data change
   useEffect(() => {
@@ -68,7 +92,7 @@ export const App: React.FC = () => {
     if (window.api) {
       const pinned = await window.api.toggleAlwaysOnTop()
       setIsPinned(pinned)
-      showToast(pinned ? '📌 Pencere üstte sabitlendi' : 'Pencere serbest bırakıldı')
+      showToast(pinned ? t('header.pinnedToast') : t('header.unpinnedToast'))
     }
   }
 
@@ -76,7 +100,7 @@ export const App: React.FC = () => {
     if (window.api) {
       const compact = await window.api.toggleCompact()
       setIsCompact(compact)
-      showToast(compact ? '🗗 Kompakt mod açık' : 'Normal moda dönüldü')
+      showToast(compact ? t('header.compactToast') : t('header.normalModeToast'))
     }
   }
 
@@ -88,7 +112,7 @@ export const App: React.FC = () => {
   const handleAddNote = () => {
     const newNote: Note = {
       id: 'note_' + Date.now(),
-      title: 'Yeni Not',
+      title: t('notes.defaultTitle'),
       content: '',
       updatedAt: Date.now()
     }
@@ -97,7 +121,7 @@ export const App: React.FC = () => {
       notes: [newNote, ...prev.notes],
       activeNoteId: newNote.id
     }))
-    showToast('Yeni not oluşturuldu')
+    showToast(t('notes.noteCreated'))
   }
 
   const handleUpdateNote = (id: string, updates: Partial<Note>) => {
@@ -109,7 +133,7 @@ export const App: React.FC = () => {
 
   const handleDeleteNote = (id: string) => {
     if (data.notes.length <= 1) {
-      showToast('En az bir not bulunmalıdır')
+      showToast(t('notes.minOneNoteWarning'))
       return
     }
     setData((prev) => {
@@ -120,7 +144,7 @@ export const App: React.FC = () => {
         activeNoteId: filtered[0]?.id || null
       }
     })
-    showToast('Not silindi')
+    showToast(t('notes.noteDeleted'))
   }
 
   // Snippets Actions
@@ -140,7 +164,7 @@ export const App: React.FC = () => {
       ...prev,
       snippets: prev.snippets.filter((s) => s.id !== id)
     }))
-    showToast('Snippet silindi')
+    showToast(t('snippets.snippetDeleted'))
   }
 
   // Todos Actions

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FileText, Code2, Wrench, Timer } from 'lucide-react'
 import { TabType } from '../types'
+import { useTranslation } from '../i18n/LanguageContext'
 
 interface NavigationProps {
   activeTab: TabType
@@ -15,11 +16,13 @@ export const Navigation: React.FC<NavigationProps> = ({
   notesCount,
   snippetsCount
 }) => {
+  const { t } = useTranslation()
+
   const tabs = [
-    { id: 'notes' as TabType, label: 'Notlar', icon: FileText, count: notesCount },
-    { id: 'snippets' as TabType, label: "Snippet'lar", icon: Code2, count: snippetsCount },
-    { id: 'tools' as TabType, label: 'Araç Kutusu', icon: Wrench },
-    { id: 'focus' as TabType, label: 'Odak & Görevler', icon: Timer }
+    { id: 'notes' as TabType, label: t('nav.notes'), icon: FileText, count: notesCount },
+    { id: 'snippets' as TabType, label: t('nav.snippets'), icon: Code2, count: snippetsCount },
+    { id: 'tools' as TabType, label: t('nav.tools'), icon: Wrench },
+    { id: 'focus' as TabType, label: t('nav.focus'), icon: Timer }
   ]
 
   return (

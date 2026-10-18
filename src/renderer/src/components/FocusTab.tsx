@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Play, Pause, RotateCcw, Coffee, Plus, Trash2, CheckCircle2 } from 'lucide-react'
 import { Todo } from '../types'
+import { useTranslation } from '../i18n/LanguageContext'
 
 interface FocusTabProps {
   todos: Todo[]
@@ -17,6 +18,8 @@ export const FocusTab: React.FC<FocusTabProps> = ({
   onDeleteTodo,
   onToast
 }) => {
+  const { t } = useTranslation()
+
   // Timer State
   const [timeLeft, setTimeLeft] = useState(25 * 60)
   const [isRunning, setIsRunning] = useState(false)
@@ -28,7 +31,9 @@ export const FocusTab: React.FC<FocusTabProps> = ({
   // Audio Chime
   const playChime = () => {
     try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
       const ctx = new AudioCtx()
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
@@ -56,11 +61,11 @@ export const FocusTab: React.FC<FocusTabProps> = ({
       setIsRunning(false)
       playChime()
       if (mode === 'work') {
-        onToast('🎉 Harika! 25 dakikalık çalışma bitti. 5 dakika mola verin!')
+        onToast(t('focus.workDoneToast'))
         setMode('break')
         setTimeLeft(5 * 60)
       } else {
-        onToast('⚡ Mola bitti! Yeni çalışma turuna başlayabilirsiniz.')
+        onToast(t('focus.breakDoneToast'))
         setMode('work')
         setTimeLeft(25 * 60)
       }
@@ -68,7 +73,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
     return () => {
       if (interval) clearInterval(interval)
     }
-  }, [isRunning, timeLeft, mode])
+  }, [isRunning, timeLeft, mode, t, onToast])
 
   const toggleTimer = () => setIsRunning(!isRunning)
 
@@ -101,7 +106,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
       {/* Pomodoro Timer Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between items-center text-center shadow-lg">
         <div className="w-full flex items-center justify-between pb-3 border-b border-slate-800/80">
-          <span className="text-xs font-semibold text-slate-300">Pomodoro Odak Sayacı</span>
+          <span className="text-xs font-semibold text-slate-300">{t('focus.timerTitle')}</span>
           <span
             className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
               mode === 'work'
@@ -109,7 +114,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
                 : 'bg-amber-500/15 text-amber-400'
             }`}
           >
-            {mode === 'work' ? 'Çalışma Zamanı 🎯' : 'Mola Zamanı ☕'}
+            {mode === 'work' ? t('focus.workTime') : t('focus.breakTime')}
           </span>
         </div>
 
@@ -126,11 +131,11 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-md"
             >
               {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              <span>{isRunning ? 'Duraklat' : 'Başlat'}</span>
+              <span>{isRunning ? t('focus.pause') : t('focus.start')}</span>
             </button>
             <button
               onClick={resetTimer}
-              title="Sıfırla"
+              title={t('focus.reset')}
               className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
             >
               <RotateCcw className="w-4 h-4" />
@@ -146,7 +151,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              25 Dk Çalışma
+              {t('focus.workDuration')}
             </button>
             <button
               onClick={() => switchMode('break')}
@@ -157,7 +162,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               }`}
             >
               <Coffee className="w-3.5 h-3.5" />
-              <span>5 Dk Mola</span>
+              <span>{t('focus.breakDuration')}</span>
             </button>
           </div>
         </div>
@@ -166,9 +171,9 @@ export const FocusTab: React.FC<FocusTabProps> = ({
       {/* Todo Checklist Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-lg overflow-hidden">
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 shrink-0">
-          <span className="text-xs font-semibold text-slate-300">Günün Görevleri</span>
+          <span className="text-xs font-semibold text-slate-300">{t('focus.tasksTitle')}</span>
           <span className="text-[11px] text-slate-400 font-medium">
-            {completedCount} / {todos.length} Tamamlandı
+            {t('focus.tasksCompleted', { completed: completedCount, total: todos.length })}
           </span>
         </div>
 
@@ -202,6 +207,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               </span>
               <button
                 onClick={() => onDeleteTodo(todo.id)}
+                title={t('focus.deleteTask')}
                 className="text-slate-600 hover:text-rose-400 p-1 rounded transition"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -211,7 +217,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
 
           {todos.length === 0 && (
             <div className="text-center py-10 text-slate-500 text-xs">
-              Henüz görev eklenmedi.
+              {t('focus.noTasks')}
             </div>
           )}
         </div>
@@ -222,7 +228,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
             type="text"
             value={newTodoText}
             onChange={(e) => setNewTodoText(e.target.value)}
-            placeholder="Yeni görev ekle..."
+            placeholder={t('focus.addTaskPlaceholder')}
             className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-500"
           />
           <button
