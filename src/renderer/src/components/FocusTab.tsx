@@ -102,16 +102,16 @@ export const FocusTab: React.FC<FocusTabProps> = ({
   }
 
   return (
-    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 overflow-y-auto bg-slate-950">
+    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 overflow-y-auto bg-app">
       {/* Pomodoro Timer Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between items-center text-center shadow-lg">
-        <div className="w-full flex items-center justify-between pb-3 border-b border-slate-800/80">
-          <span className="text-xs font-semibold text-slate-300">{t('focus.timerTitle')}</span>
+      <div className="bg-card border border-main rounded-2xl p-5 flex flex-col justify-between items-center text-center shadow-app-card">
+        <div className="w-full flex items-center justify-between pb-3 border-b border-main">
+          <span className="text-xs font-semibold text-app">{t('focus.timerTitle')}</span>
           <span
             className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
               mode === 'work'
-                ? 'bg-emerald-500/15 text-emerald-400'
-                : 'bg-amber-500/15 text-amber-400'
+                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                : 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
             }`}
           >
             {mode === 'work' ? t('focus.workTime') : t('focus.breakTime')}
@@ -119,7 +119,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
         </div>
 
         <div className="py-10">
-          <div className="text-6xl font-extrabold font-mono tracking-tight text-slate-100 drop-shadow">
+          <div className="text-6xl font-extrabold font-mono tracking-tight text-app drop-shadow">
             {formattedTime}
           </div>
         </div>
@@ -128,7 +128,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
           <div className="flex items-center justify-center gap-2">
             <button
               onClick={toggleTimer}
-              className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition shadow-md"
+              className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl bg-accent hover:bg-accent-hover text-white font-medium text-xs transition shadow-sm"
             >
               {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               <span>{isRunning ? t('focus.pause') : t('focus.start')}</span>
@@ -136,19 +136,19 @@ export const FocusTab: React.FC<FocusTabProps> = ({
             <button
               onClick={resetTimer}
               title={t('focus.reset')}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+              className="p-2 rounded-xl bg-surface hover:bg-nav text-secondary hover:text-app border border-main transition"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-2 pt-1 border-t border-slate-800/50">
+          <div className="flex items-center justify-center gap-2 pt-1 border-t border-main">
             <button
               onClick={() => switchMode('work')}
               className={`text-xs px-3 py-1 rounded-lg transition ${
                 mode === 'work'
-                  ? 'bg-slate-800 text-slate-100 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-surface text-app font-semibold border border-main'
+                  : 'text-muted hover:text-app'
               }`}
             >
               {t('focus.workDuration')}
@@ -157,8 +157,8 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               onClick={() => switchMode('break')}
               className={`text-xs px-3 py-1 rounded-lg transition flex items-center gap-1 ${
                 mode === 'break'
-                  ? 'bg-slate-800 text-slate-100 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-surface text-app font-semibold border border-main'
+                  : 'text-muted hover:text-app'
               }`}
             >
               <Coffee className="w-3.5 h-3.5" />
@@ -169,10 +169,10 @@ export const FocusTab: React.FC<FocusTabProps> = ({
       </div>
 
       {/* Todo Checklist Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-lg overflow-hidden">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 shrink-0">
-          <span className="text-xs font-semibold text-slate-300">{t('focus.tasksTitle')}</span>
-          <span className="text-[11px] text-slate-400 font-medium">
+      <div className="bg-card border border-main rounded-2xl p-5 flex flex-col justify-between shadow-app-card overflow-hidden">
+        <div className="flex items-center justify-between pb-3 border-b border-main shrink-0">
+          <span className="text-xs font-semibold text-app">{t('focus.tasksTitle')}</span>
+          <span className="text-[11px] text-muted font-medium">
             {t('focus.tasksCompleted', { completed: completedCount, total: todos.length })}
           </span>
         </div>
@@ -184,23 +184,23 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               key={todo.id}
               className={`flex items-center gap-2.5 p-2.5 rounded-xl border transition ${
                 todo.done
-                  ? 'bg-slate-950/40 border-slate-800/40 opacity-70'
-                  : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                  ? 'bg-surface/40 border-main/40 opacity-70'
+                  : 'bg-surface border-main hover:border-accent/40'
               }`}
             >
               <button
                 onClick={() => onToggleTodo(todo.id)}
                 className={`p-0.5 rounded transition ${
-                  todo.done ? 'text-indigo-400' : 'text-slate-600 hover:text-slate-400'
+                  todo.done ? 'text-accent' : 'text-muted hover:text-app'
                 }`}
               >
                 <CheckCircle2
-                  className={`w-4 h-4 ${todo.done ? 'fill-indigo-500/20' : ''}`}
+                  className={`w-4 h-4 ${todo.done ? 'fill-accent/20' : ''}`}
                 />
               </button>
               <span
                 className={`flex-1 text-xs select-text ${
-                  todo.done ? 'line-through text-slate-500' : 'text-slate-200'
+                  todo.done ? 'line-through text-muted' : 'text-app'
                 }`}
               >
                 {todo.text}
@@ -208,7 +208,7 @@ export const FocusTab: React.FC<FocusTabProps> = ({
               <button
                 onClick={() => onDeleteTodo(todo.id)}
                 title={t('focus.deleteTask')}
-                className="text-slate-600 hover:text-rose-400 p-1 rounded transition"
+                className="text-muted hover:text-rose-500 p-1 rounded transition"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -216,24 +216,24 @@ export const FocusTab: React.FC<FocusTabProps> = ({
           ))}
 
           {todos.length === 0 && (
-            <div className="text-center py-10 text-slate-500 text-xs">
+            <div className="text-center py-10 text-muted text-xs">
               {t('focus.noTasks')}
             </div>
           )}
         </div>
 
         {/* Add Todo Input */}
-        <form onSubmit={handleAdd} className="flex items-center gap-2 pt-2 border-t border-slate-800/80 shrink-0">
+        <form onSubmit={handleAdd} className="flex items-center gap-2 pt-2 border-t border-main shrink-0">
           <input
             type="text"
             value={newTodoText}
             onChange={(e) => setNewTodoText(e.target.value)}
             placeholder={t('focus.addTaskPlaceholder')}
-            className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-500"
+            className="flex-1 bg-input border border-main rounded-xl px-3 py-1.5 text-xs text-app placeholder:text-muted outline-none focus:border-accent"
           />
           <button
             type="submit"
-            className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition shrink-0"
+            className="p-2 rounded-xl bg-accent hover:bg-accent-hover text-white transition shrink-0 shadow-sm"
           >
             <Plus className="w-4 h-4" />
           </button>

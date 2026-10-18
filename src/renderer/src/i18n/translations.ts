@@ -225,6 +225,15 @@ export const translations = {
       invalidCurrentPassword: 'Mevcut şifreniz hatalı!',
       confirmRemoveTitle: 'Şifre korumasını kaldırmak istediğinize emin misiniz?',
       confirmRemoveDesc: 'Verileriniz artık diskte düz metin olarak saklanacaktır.'
+    },
+    theme: {
+      system: 'Sistem (Otomatik)',
+      dark: 'Koyu Tema',
+      light: 'Açık Tema',
+      systemToast: '💻 Sistem temasına uyarlandı',
+      darkToast: '🌙 Modern Koyu Tema aktif',
+      lightToast: '☀️ Açık Tema aktif',
+      toggleTooltip: 'Tema: {mode} (Değiştirmek için tıklayın)'
     }
   },
   en: {
@@ -451,6 +460,15 @@ export const translations = {
       invalidCurrentPassword: 'Current password is incorrect!',
       confirmRemoveTitle: 'Are you sure you want to remove password protection?',
       confirmRemoveDesc: 'Your data will now be stored unencrypted (plain text) on disk.'
+    },
+    theme: {
+      system: 'System (Auto)',
+      dark: 'Dark Theme',
+      light: 'Light Theme',
+      systemToast: '💻 Synced with system theme',
+      darkToast: '🌙 Modern Dark Theme active',
+      lightToast: '☀️ Light Theme active',
+      toggleTooltip: 'Theme: {mode} (Click to toggle)'
     }
   }
 } as const

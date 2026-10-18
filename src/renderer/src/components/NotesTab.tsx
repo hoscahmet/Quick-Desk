@@ -42,15 +42,15 @@ export const NotesTab: React.FC<NotesTabProps> = ({
   return (
     <div className="flex h-full w-full overflow-hidden">
       {/* Sidebar List */}
-      <aside className="w-56 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0">
-        <div className="flex items-center justify-between p-3 border-b border-slate-800">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+      <aside className="w-56 bg-nav border-r border-main flex flex-col shrink-0">
+        <div className="flex items-center justify-between p-3 border-b border-main">
+          <span className="text-[11px] font-semibold text-muted uppercase tracking-wider">
             {t('notes.myNotes')}
           </span>
           <button
             onClick={onAddNote}
             title={t('notes.addNewNote')}
-            className="p-1 rounded text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition"
+            className="p-1 rounded text-muted hover:text-app hover:bg-surface transition"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -65,14 +65,14 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 onClick={() => onSelectNote(note.id)}
                 className={`p-2 rounded-lg cursor-pointer transition flex flex-col gap-0.5 ${
                   isSelected
-                    ? 'bg-indigo-500/15 border-l-2 border-indigo-500 text-slate-100'
-                    : 'hover:bg-slate-800/50 text-slate-400'
+                    ? 'bg-accent-subtle border-l-2 border-accent text-app font-medium'
+                    : 'hover:bg-surface text-secondary'
                 }`}
               >
                 <div className="text-xs font-medium truncate">
                   {note.title || t('notes.untitledNote')}
                 </div>
-                <div className="text-[10px] text-slate-500 truncate">
+                <div className="text-[10px] text-muted truncate">
                   {note.content ? note.content.slice(0, 40) : t('notes.emptyNote')}
                 </div>
               </div>
@@ -82,24 +82,24 @@ export const NotesTab: React.FC<NotesTabProps> = ({
       </aside>
 
       {/* Editor Area */}
-      <div className="flex-1 flex flex-col bg-slate-950 overflow-hidden">
+      <div className="flex-1 flex flex-col bg-app overflow-hidden">
         {activeNote ? (
           <>
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-slate-800 shrink-0">
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-main shrink-0">
               <input
                 type="text"
                 value={activeNote.title}
                 onChange={(e) => onUpdateNote(activeNote.id, { title: e.target.value })}
                 placeholder={t('notes.titlePlaceholder')}
-                className="bg-transparent text-sm font-semibold text-slate-100 outline-none flex-1 placeholder:text-slate-600"
+                className="bg-transparent text-sm font-semibold text-app outline-none flex-1 placeholder:text-muted"
               />
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-[11px] text-slate-500 mr-2">
+                <span className="text-[11px] text-muted mr-2">
                   {t('notes.stats', { chars: charCount, words: wordCount })}
                 </span>
                 <button
                   onClick={handleCopy}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition text-[11.5px]"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-card hover:bg-surface border border-main text-secondary hover:text-app transition text-[11.5px]"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>{t('common.copy')}</span>
@@ -107,7 +107,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
                 <button
                   onClick={() => onDeleteNote(activeNote.id)}
                   title={t('notes.deleteNote')}
-                  className="p-1 rounded bg-slate-900 hover:bg-rose-950/60 border border-slate-800 hover:border-rose-800/50 text-slate-400 hover:text-rose-400 transition"
+                  className="p-1 rounded bg-card hover:bg-rose-500/10 border border-main hover:border-rose-500/40 text-muted hover:text-rose-500 transition"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -118,11 +118,11 @@ export const NotesTab: React.FC<NotesTabProps> = ({
               value={activeNote.content}
               onChange={(e) => onUpdateNote(activeNote.id, { content: e.target.value })}
               placeholder={t('notes.contentPlaceholder')}
-              className="flex-1 p-4 bg-transparent text-slate-200 font-sans text-xs sm:text-sm leading-relaxed resize-none outline-none placeholder:text-slate-600"
+              className="flex-1 p-4 bg-transparent text-secondary font-sans text-xs sm:text-sm leading-relaxed resize-none outline-none placeholder:text-muted"
             />
           </>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-2">
+          <div className="flex-1 flex flex-col items-center justify-center text-muted gap-2">
             <FileText className="w-8 h-8 opacity-40" />
             <p className="text-xs">{t('notes.noNoteSelected')}</p>
           </div>

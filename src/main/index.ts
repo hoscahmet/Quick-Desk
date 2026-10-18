@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, clipboard, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, clipboard, shell, nativeImage } from 'electron'
 import { join } from 'node:path'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import crypto from 'node:crypto'
@@ -126,6 +126,8 @@ function ensureDataFile(): void {
 
 function createWindow(): void {
   const isMac = process.platform === 'darwin'
+  const iconPath = join(__dirname, '../../resources/icon.png')
+  const appIcon = existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : undefined
 
   mainWindow = new BrowserWindow({
     width: 940,
@@ -135,6 +137,7 @@ function createWindow(): void {
     backgroundColor: '#0b0f19',
     titleBarStyle: isMac ? 'hiddenInset' : 'default',
     trafficLightPosition: isMac ? { x: 16, y: 16 } : undefined,
+    icon: appIcon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false,
@@ -143,6 +146,10 @@ function createWindow(): void {
     },
     show: false
   })
+
+  if (isMac && app.dock && appIcon && !appIcon.isEmpty()) {
+    app.dock.setIcon(appIcon)
+  }
 
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()

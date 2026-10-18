@@ -142,9 +142,9 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col p-4 overflow-hidden gap-3.5 bg-slate-950">
+    <div className="flex-1 flex flex-col p-4 overflow-hidden gap-3.5 bg-app">
       {/* Subnav */}
-      <div className="flex items-center gap-1.5 pb-2 border-b border-slate-800 shrink-0">
+      <div className="flex items-center gap-1.5 pb-2 border-b border-main shrink-0">
         {[
           { id: 'json', label: t('tools.tabs.json') },
           { id: 'base64', label: t('tools.tabs.base64') },
@@ -156,8 +156,8 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
             onClick={() => setSubtool(tab.id as typeof subtool)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
               subtool === tab.id
-                ? 'bg-indigo-500/20 text-indigo-400 font-semibold border border-indigo-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                ? 'bg-accent-subtle text-accent font-semibold border border-accent/30'
+                : 'text-muted hover:text-app hover:bg-surface'
             }`}
           >
             {tab.label}
@@ -171,13 +171,13 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleJsonFormat}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.json.beautify')}
             </button>
             <button
               onClick={handleJsonMinify}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.json.minify')}
             </button>
@@ -186,13 +186,13 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                 setJsonText('')
                 setJsonStatus(null)
               }}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-muted hover:text-app text-xs transition"
             >
               {t('common.clear')}
             </button>
             <button
               onClick={() => copyToClipboard(jsonText, 'JSON')}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs transition flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs transition flex items-center gap-1.5 shadow-sm"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{t('common.copy')}</span>
@@ -201,7 +201,7 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
             {jsonStatus && (
               <span
                 className={`ml-auto text-xs flex items-center gap-1 ${
-                  jsonStatus.type === 'success' ? 'text-emerald-400' : 'text-rose-400'
+                  jsonStatus.type === 'success' ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'
                 }`}
               >
                 {jsonStatus.type === 'success' ? (
@@ -218,7 +218,7 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
             value={jsonText}
             onChange={(e) => setJsonText(e.target.value)}
             placeholder={t('tools.json.placeholder')}
-            className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-3.5 font-mono text-xs text-slate-100 outline-none focus:border-indigo-500 resize-none leading-relaxed"
+            className="flex-1 bg-card border border-main rounded-xl p-3.5 font-mono text-xs text-app outline-none focus:border-accent resize-none leading-relaxed placeholder:text-muted"
           />
         </div>
       )}
@@ -229,13 +229,13 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
           <div className="flex items-center gap-2 shrink-0 flex-wrap">
             <button
               onClick={handleB64Encode}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.base64.encode')}
             </button>
             <button
               onClick={handleB64Decode}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.base64.decode')}
             </button>
@@ -244,7 +244,7 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                 setB64Text(encodeURIComponent(b64Text))
                 onToast(t('tools.base64.urlEncodedToast'))
               }}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.base64.urlEncode')}
             </button>
@@ -257,19 +257,19 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                   onToast(t('tools.base64.invalidUrl'))
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.base64.urlDecode')}
             </button>
             <button
               onClick={() => setB64Text('')}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs transition"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-muted hover:text-app text-xs transition"
             >
               {t('common.clear')}
             </button>
             <button
               onClick={() => copyToClipboard(b64Text, t('tools.text.label'))}
-              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs transition flex items-center gap-1.5 ml-auto"
+              className="px-3 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs transition flex items-center gap-1.5 ml-auto shadow-sm"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{t('common.copy')}</span>
@@ -280,7 +280,7 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
             value={b64Text}
             onChange={(e) => setB64Text(e.target.value)}
             placeholder={t('tools.base64.placeholder')}
-            className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-3.5 font-mono text-xs text-slate-100 outline-none focus:border-indigo-500 resize-none leading-relaxed"
+            className="flex-1 bg-card border border-main rounded-xl p-3.5 font-mono text-xs text-app outline-none focus:border-accent resize-none leading-relaxed placeholder:text-muted"
           />
         </div>
       )}
@@ -291,50 +291,50 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
           <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
             <button
               onClick={() => handleCase('upper')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.uppercase')}
             </button>
             <button
               onClick={() => handleCase('lower')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.lowercase')}
             </button>
             <button
               onClick={() => handleCase('title')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.titlecase')}
             </button>
             <button
               onClick={() => handleCase('camel')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.camelcase')}
             </button>
             <button
               onClick={() => handleCase('snake')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.snakecase')}
             </button>
             <button
               onClick={() => handleCase('kebab')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-medium transition"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs font-medium transition shadow-sm"
             >
               {t('tools.text.kebabcase')}
             </button>
             <button
               onClick={() => copyToClipboard(textInput, t('tools.text.label'))}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs transition flex items-center gap-1.5 ml-auto"
+              className="px-2.5 py-1.5 rounded-lg bg-card hover:bg-surface border border-main text-secondary hover:text-app text-xs transition flex items-center gap-1.5 ml-auto shadow-sm"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{t('common.copy')}</span>
             </button>
           </div>
 
-          <div className="text-[11px] text-slate-500">
+          <div className="text-[11px] text-muted">
             {t('tools.text.stats', {
               chars: textInput.length,
               words: textInput.trim() ? textInput.trim().split(/\s+/).length : 0,
@@ -346,7 +346,7 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
             placeholder={t('tools.text.placeholder')}
-            className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-3.5 font-mono text-xs text-slate-100 outline-none focus:border-indigo-500 resize-none leading-relaxed"
+            className="flex-1 bg-card border border-main rounded-xl p-3.5 font-mono text-xs text-app outline-none focus:border-accent resize-none leading-relaxed placeholder:text-muted"
           />
         </div>
       )}
@@ -355,9 +355,9 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
       {subtool === 'generators' && (
         <div className="flex-1 overflow-y-auto space-y-3 pr-1">
           {/* UUID Generator */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col gap-2.5">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-              <Hash className="w-4 h-4 text-indigo-400" />
+          <div className="bg-card border border-main rounded-xl p-4 flex flex-col gap-2.5 shadow-app-card">
+            <div className="flex items-center gap-2 text-xs font-semibold text-app">
+              <Hash className="w-4 h-4 text-sky-500 dark:text-sky-400" />
               <span>{t('tools.generators.uuidTitle')}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -365,18 +365,18 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                 type="text"
                 readOnly
                 value={uuid}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 font-mono text-xs text-sky-400 outline-none select-all"
+                className="flex-1 bg-surface border border-main rounded-lg px-3 py-1.5 font-mono text-xs text-sky-600 dark:text-sky-400 outline-none select-all"
               />
               <button
                 onClick={() => setUuid(crypto.randomUUID ? crypto.randomUUID() : '')}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg bg-surface hover:bg-nav border border-main text-secondary hover:text-app text-xs font-medium transition flex items-center gap-1.5"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>{t('tools.generators.generateNew')}</span>
               </button>
               <button
                 onClick={() => copyToClipboard(uuid, 'UUID')}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition"
+                className="p-2 rounded-lg bg-surface hover:bg-nav border border-main text-secondary hover:text-app text-xs transition"
               >
                 <Copy className="w-3.5 h-3.5" />
               </button>
@@ -384,9 +384,9 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
           </div>
 
           {/* Password Generator */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col gap-2.5">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-              <Key className="w-4 h-4 text-emerald-400" />
+          <div className="bg-card border border-main rounded-xl p-4 flex flex-col gap-2.5 shadow-app-card">
+            <div className="flex items-center gap-2 text-xs font-semibold text-app">
+              <Key className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>{t('tools.generators.passwordTitle')}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -395,12 +395,12 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                 readOnly
                 value={password}
                 placeholder={t('tools.generators.passwordPlaceholder')}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 font-mono text-xs text-emerald-400 outline-none select-all placeholder:text-slate-600"
+                className="flex-1 bg-surface border border-main rounded-lg px-3 py-1.5 font-mono text-xs text-emerald-600 dark:text-emerald-400 outline-none select-all placeholder:text-muted"
               />
               <select
                 value={pwdLen}
                 onChange={(e) => setPwdLen(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-300 outline-none"
+                className="bg-surface border border-main rounded-lg px-2 py-1.5 text-xs text-secondary outline-none focus:border-accent"
               >
                 <option value="12">{`12 ${t('tools.generators.charsUnit')}`}</option>
                 <option value="16">{`16 ${t('tools.generators.charsUnit')}`}</option>
@@ -409,13 +409,13 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
               </select>
               <button
                 onClick={() => generatePassword(parseInt(pwdLen, 10))}
-                className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition"
+                className="px-3 py-1.5 rounded-lg bg-accent hover:bg-accent-hover text-white text-xs font-medium transition shadow-sm"
               >
                 {t('tools.generators.generate')}
               </button>
               <button
                 onClick={() => copyToClipboard(password, t('tools.generators.passwordLabel'))}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition"
+                className="p-2 rounded-lg bg-surface hover:bg-nav border border-main text-secondary hover:text-app text-xs transition"
               >
                 <Copy className="w-3.5 h-3.5" />
               </button>
@@ -423,9 +423,9 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
           </div>
 
           {/* Unix Timestamp */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col gap-2.5">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-              <Clock className="w-4 h-4 text-amber-400" />
+          <div className="bg-card border border-main rounded-xl p-4 flex flex-col gap-2.5 shadow-app-card">
+            <div className="flex items-center gap-2 text-xs font-semibold text-app">
+              <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               <span>{t('tools.generators.timestampTitle')}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -433,21 +433,21 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({ onToast }) => {
                 type="text"
                 readOnly
                 value={timestamp}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 font-mono text-xs text-amber-300 outline-none select-all"
+                className="flex-1 bg-surface border border-main rounded-lg px-3 py-1.5 font-mono text-xs text-amber-600 dark:text-amber-300 outline-none select-all"
               />
               <button
                 onClick={() => {
                   const now = new Date()
                   setTimestamp(`${Math.floor(now.getTime() / 1000)} (${now.toLocaleString(getLocale())})`)
                 }}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg bg-surface hover:bg-nav border border-main text-secondary hover:text-app text-xs font-medium transition flex items-center gap-1.5"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>{t('tools.generators.now')}</span>
               </button>
               <button
                 onClick={() => copyToClipboard(timestamp.split(' ')[0], 'Timestamp')}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition"
+                className="p-2 rounded-lg bg-surface hover:bg-nav border border-main text-secondary hover:text-app text-xs transition"
               >
                 <Copy className="w-3.5 h-3.5" />
               </button>

@@ -1,7 +1,9 @@
 export type Language = 'tr' | 'en'
+export type Theme = 'system' | 'dark' | 'light'
 
 export interface AppSettings {
   language: Language
+  theme?: Theme
   autoLockMinutes?: number
 }
 

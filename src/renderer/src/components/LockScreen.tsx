@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { ShieldCheck, Eye, EyeOff, KeyRound, Loader2, Zap } from 'lucide-react'
+import { ShieldCheck, Eye, EyeOff, KeyRound, Loader2, Sun, Moon, Monitor } from 'lucide-react'
 import { useTranslation } from '../i18n/LanguageContext'
+import { useTheme } from '../theme/ThemeContext'
+import { Logo } from './Logo'
 import { AppData } from '../types'
 
 interface LockScreenProps {
@@ -9,6 +11,7 @@ interface LockScreenProps {
 
 export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
   const { language, setLanguage, t } = useTranslation()
+  const { theme, toggleTheme } = useTheme()
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -49,74 +52,86 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
   }
 
   return (
-    <div className="h-screen w-screen bg-[#0b0f19] text-slate-100 flex flex-col select-none overflow-hidden relative">
+    <div className="h-screen w-screen bg-app text-app flex flex-col select-none overflow-hidden relative">
       {/* Top Header Bar for Drag & Controls */}
-      <div className="h-11 border-b border-slate-800/80 flex items-center justify-between px-3.5 z-40 bg-slate-900/40 backdrop-blur">
+      <div className="h-11 border-b border-main flex items-center justify-between px-3.5 z-40 bg-header/60 backdrop-blur">
         <div className="drag-region flex-1 h-full flex items-center pl-16">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center shadow-inner">
-              <Zap className="w-3.5 h-3.5 fill-indigo-400 text-indigo-400" />
-            </div>
-            <span className="font-semibold text-xs tracking-wide text-slate-200">QuickDesk</span>
+            <Logo size={20} />
+            <span className="font-semibold text-xs tracking-wide text-app">QuickDesk</span>
           </div>
         </div>
 
-        {/* Language Switcher */}
-        <div className="no-drag flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5 text-[11px] font-semibold">
+        {/* Controls: Theme & Language */}
+        <div className="no-drag flex items-center gap-2">
+          {/* Theme switcher */}
           <button
-            onClick={() => setLanguage('tr')}
-            title="Türkçe"
-            className={`px-1.5 py-0.5 rounded transition ${
-              language === 'tr'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+            onClick={toggleTheme}
+            title={t(`theme.${theme}`)}
+            className="p-1.5 rounded-lg text-muted hover:text-app hover:bg-surface border border-main transition"
           >
-            TR
+            {theme === 'system' && <Monitor className="w-3.5 h-3.5" />}
+            {theme === 'dark' && <Moon className="w-3.5 h-3.5" />}
+            {theme === 'light' && <Sun className="w-3.5 h-3.5" />}
           </button>
-          <button
-            onClick={() => setLanguage('en')}
-            title="English"
-            className={`px-1.5 py-0.5 rounded transition ${
-              language === 'en'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            EN
-          </button>
+
+          {/* Language Switcher */}
+          <div className="flex items-center bg-surface border border-main rounded-lg p-0.5 text-[11px] font-semibold">
+            <button
+              onClick={() => setLanguage('tr')}
+              title="Türkçe"
+              className={`px-1.5 py-0.5 rounded transition ${
+                language === 'tr'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-muted hover:text-app'
+              }`}
+            >
+              TR
+            </button>
+            <button
+              onClick={() => setLanguage('en')}
+              title="English"
+              className={`px-1.5 py-0.5 rounded transition ${
+                language === 'en'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-muted hover:text-app'
+              }`}
+            >
+              EN
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Main Lock Screen Card */}
       <div className="flex-1 flex items-center justify-center p-6">
         <div
-          className={`w-full max-w-sm bg-slate-900/90 border border-slate-800/90 rounded-2xl p-7 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center transition-all ${
+          className={`w-full max-w-sm bg-card border border-main rounded-2xl p-7 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center transition-all ${
             isShaking ? 'animate-shake' : ''
           }`}
         >
           {/* Glowing Shield Icon */}
           <div className="relative mb-4">
-            <div className="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl"></div>
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-slate-800 border border-indigo-500/30 flex items-center justify-center relative shadow-inner">
-              <ShieldCheck className="w-7 h-7 text-indigo-400" />
+            <div className="absolute inset-0 rounded-2xl bg-accent-subtle blur-xl"></div>
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-surface border border-accent/30 flex items-center justify-center relative shadow-inner">
+              <ShieldCheck className="w-7 h-7 text-accent" />
             </div>
           </div>
 
-          <h2 className="text-base font-bold text-slate-100 flex items-center gap-2 mb-1.5">
+          <h2 className="text-base font-bold text-app flex items-center gap-2 mb-1.5">
             <span>{t('security.lockScreenTitle')}</span>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
               AES-256
             </span>
           </h2>
 
-          <p className="text-xs text-slate-400 leading-relaxed mb-6">
+          <p className="text-xs text-muted leading-relaxed mb-6">
             {t('security.lockScreenSubtitle')}
           </p>
 
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
             <div className="relative w-full">
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted">
                 <KeyRound className="w-4 h-4" />
               </div>
 
@@ -130,24 +145,24 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
                 }}
                 placeholder={t('security.passwordPlaceholder')}
                 disabled={isLoading}
-                className={`w-full bg-slate-950 border rounded-xl pl-10 pr-10 py-2.5 text-xs text-slate-100 placeholder:text-slate-500 outline-none transition ${
+                className={`w-full bg-input border rounded-xl pl-10 pr-10 py-2.5 text-xs text-app placeholder:text-muted outline-none transition ${
                   error
                     ? 'border-rose-500/80 focus:border-rose-500'
-                    : 'border-slate-800 focus:border-indigo-500'
+                    : 'border-main focus:border-accent'
                 }`}
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted hover:text-app transition"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
 
             {error && (
-              <div className="text-[11.5px] text-rose-400 font-medium text-left px-1">
+              <div className="text-[11.5px] text-rose-500 dark:text-rose-400 font-medium text-left px-1">
                 {error}
               </div>
             )}
@@ -155,7 +170,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlock }) => {
             <button
               type="submit"
               disabled={isLoading || !password.trim()}
-              className="w-full mt-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-indigo-600 text-white font-medium text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20"
+              className="w-full mt-1 py-2.5 rounded-xl bg-accent hover:bg-accent-hover disabled:opacity-50 disabled:hover:bg-accent text-white font-medium text-xs transition flex items-center justify-center gap-2 shadow-sm"
             >
               {isLoading ? (
                 <>

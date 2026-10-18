@@ -11,9 +11,11 @@ import { LockScreen } from './components/LockScreen'
 import { SecurityModal } from './components/SecurityModal'
 import { AppData, TabType, Note, Snippet, Account } from './types'
 import { useTranslation } from './i18n/LanguageContext'
+import { useTheme } from './theme/ThemeContext'
 
 export const App: React.FC = () => {
   const { language, setLanguage, t } = useTranslation()
+  const { theme, setTheme } = useTheme()
 
   const [data, setData] = useState<AppData>({
     notes: [],
@@ -23,6 +25,7 @@ export const App: React.FC = () => {
     accounts: [],
     settings: {
       language,
+      theme,
       autoLockMinutes: 0
     }
   })
@@ -72,10 +75,16 @@ export const App: React.FC = () => {
             if (loaded.settings?.language && loaded.settings.language !== language) {
               setLanguage(loaded.settings.language)
             }
+            if (loaded.settings?.theme && loaded.settings.theme !== theme) {
+              setTheme(loaded.settings.theme)
+            }
           } else {
             setData(loaded)
             if (loaded.settings?.language && loaded.settings.language !== language) {
               setLanguage(loaded.settings.language)
+            }
+            if (loaded.settings?.theme && loaded.settings.theme !== theme) {
+              setTheme(loaded.settings.theme)
             }
           }
         }
@@ -87,20 +96,21 @@ export const App: React.FC = () => {
     load()
   }, [])
 
-  // Sync language changes into AppData for persistence
+  // Sync language and theme changes into AppData for persistence
   useEffect(() => {
     if (!isLoadedRef.current || isLocked) return
     setData((prev) => {
-      if (prev.settings?.language === language) return prev
+      if (prev.settings?.language === language && prev.settings?.theme === theme) return prev
       return {
         ...prev,
         settings: {
           ...prev.settings,
-          language
+          language,
+          theme
         }
       }
     })
-  }, [language, isLocked])
+  }, [language, theme, isLocked])
 
   // Auto-save on data change
   useEffect(() => {
@@ -359,7 +369,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#0b0f19] text-slate-100 overflow-hidden">
+    <div className="flex flex-col h-screen w-screen bg-app text-app overflow-hidden transition-colors duration-200">
       <Header
         isPinned={isPinned}
         isCompact={isCompact}
@@ -369,6 +379,7 @@ export const App: React.FC = () => {
         onToggleCompact={toggleCompact}
         onOpenSecurity={() => setIsSecurityModalOpen(true)}
         onQuickLock={() => handleQuickLock(false)}
+        onToast={showToast}
       />
 
       <Navigation

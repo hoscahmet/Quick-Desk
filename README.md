@@ -50,6 +50,11 @@ Bu proje, güncel endüstri standartları doğrultusunda **`electron-vite`**, **
    - **Hızlı Kilitleme (`Cmd/Ctrl + L` veya Header butonu)**: Tek tıkla veya kısayolla kasayı anında kilitleme.
    - **İnaktivitede Otomatik Kilitleme (Auto-Lock)**: 2, 5, 15 veya 30 dakika boşta kalındığında güvenliği sağlamak için otomatik kilitlenme.
    - **Kasa Yönetimi**: Güvenlik modalı üzerinden şifre belirleme, güç ölçer, şifre değiştirme ve kaldırma.
+9. **🌓 Dark & Light Mod ve Otomatik Sistem Algılama**:
+   - **Sistem Teması Algılama (`system`)**: İşletim sisteminizin açık/koyu temasını `matchMedia` ile anlık olarak dinler ve uyum sağlar.
+   - **Manuel Tema Değiştirici (`Monitor` -> `Moon` -> `Sun`)**: Header üzerindeki düğme veya Kilit Ekranı üzerinden istenilen temaya tek tıkla geçiş.
+   - **Ultra-Modern Koyu Tema Renkleri**: Sıradan donuk griler yerine zengin derin obsidiyen/lacivert tonları (`#080c14`, `#0d1322`, `#12192c`), canlı indigo aksanlar ve yüksek kontrastlı tipografi.
+   - Tüm sekmelerde, formlarda ve kilit ekranında akıcı, yumuşak geçişler ve tam uyum.
 
 ---
 

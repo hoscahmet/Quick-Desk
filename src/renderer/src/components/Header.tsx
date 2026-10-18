@@ -1,6 +1,18 @@
 import React from 'react'
-import { Zap, Pin, Minimize2, Maximize2, Shield, ShieldCheck, Lock } from 'lucide-react'
+import {
+  Pin,
+  Minimize2,
+  Maximize2,
+  Shield,
+  ShieldCheck,
+  Lock,
+  Sun,
+  Moon,
+  Monitor
+} from 'lucide-react'
 import { useTranslation } from '../i18n/LanguageContext'
+import { useTheme } from '../theme/ThemeContext'
+import { Logo } from './Logo'
 
 interface HeaderProps {
   isPinned: boolean
@@ -11,6 +23,7 @@ interface HeaderProps {
   onToggleCompact: () => void
   onOpenSecurity: () => void
   onQuickLock: () => void
+  onToast: (msg: string) => void
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,21 +34,29 @@ export const Header: React.FC<HeaderProps> = ({
   onTogglePin,
   onToggleCompact,
   onOpenSecurity,
-  onQuickLock
+  onQuickLock,
+  onToast
 }) => {
   const { language, setLanguage, t } = useTranslation()
+  const { theme, toggleTheme } = useTheme()
+
+  const handleThemeClick = () => {
+    toggleTheme()
+    const order = ['system', 'dark', 'light'] as const
+    const nextIndex = (order.indexOf(theme) + 1) % order.length
+    const nextTheme = order[nextIndex]
+    onToast(t(`theme.${nextTheme}Toast`))
+  }
 
   return (
-    <header className="h-11 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between px-3.5 z-40 select-none">
+    <header className="h-11 bg-header border-b border-main flex items-center justify-between px-3.5 z-40 select-none transition-colors duration-200">
       <div className="drag-region flex-1 h-full flex items-center pl-16">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center shadow-inner">
-            <Zap className="w-3.5 h-3.5 fill-indigo-400 text-indigo-400" />
-          </div>
-          <span className="font-semibold text-xs tracking-wide text-slate-100">
+          <Logo size={20} />
+          <span className="font-semibold text-xs tracking-wide text-app">
             {t('header.appName')}
           </span>
-          <span className="text-[10px] text-slate-500 transition-opacity duration-300 ml-2">
+          <span className="text-[10px] text-muted transition-opacity duration-300 ml-2">
             {isSaving ? t('header.saving') : t('header.saved')}
           </span>
         </div>
@@ -47,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onQuickLock}
             title={t('security.lockNow')}
-            className="p-1.5 rounded-md text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition border border-transparent"
+            className="p-1.5 rounded-md text-muted hover:text-amber-500 hover:bg-surface transition border border-transparent"
           >
             <Lock className="w-3.5 h-3.5" />
           </button>
@@ -59,16 +80,31 @@ export const Header: React.FC<HeaderProps> = ({
           title={hasPassword ? t('security.settingsTooltip') : t('security.setPasswordTooltip')}
           className={`p-1.5 rounded-md transition border border-transparent ${
             hasPassword
-              ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25 hover:bg-emerald-500/20'
-              : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800'
+              ? 'text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/25 hover:bg-emerald-500/20'
+              : 'text-muted hover:text-app hover:bg-surface'
           }`}
         >
-          {hasPassword ? <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Shield className="w-3.5 h-3.5" />}
+          {hasPassword ? (
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
+          ) : (
+            <Shield className="w-3.5 h-3.5" />
+          )}
+        </button>
+
+        {/* Theme Switcher Button (System -> Dark -> Light cycle) */}
+        <button
+          onClick={handleThemeClick}
+          title={t('theme.toggleTooltip', { mode: t(`theme.${theme}`) })}
+          className="p-1.5 rounded-md text-muted hover:text-app hover:bg-surface transition border border-transparent"
+        >
+          {theme === 'system' && <Monitor className="w-3.5 h-3.5" />}
+          {theme === 'dark' && <Moon className="w-3.5 h-3.5 text-sky-400" />}
+          {theme === 'light' && <Sun className="w-3.5 h-3.5 text-amber-500" />}
         </button>
 
         {/* Language Switcher */}
         <div
-          className="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5 text-[11px] font-semibold mr-1"
+          className="flex items-center bg-surface border border-main rounded-lg p-0.5 text-[11px] font-semibold mr-1"
           role="group"
           aria-label={t('header.switchLanguage')}
         >
@@ -77,8 +113,8 @@ export const Header: React.FC<HeaderProps> = ({
             title="Türkçe"
             className={`px-1.5 py-0.5 rounded transition ${
               language === 'tr'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-accent text-white shadow-sm'
+                : 'text-muted hover:text-app'
             }`}
           >
             TR
@@ -88,8 +124,8 @@ export const Header: React.FC<HeaderProps> = ({
             title="English"
             className={`px-1.5 py-0.5 rounded transition ${
               language === 'en'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-accent text-white shadow-sm'
+                : 'text-muted hover:text-app'
             }`}
           >
             EN
@@ -99,8 +135,8 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onToggleCompact}
           title={isCompact ? t('header.fullMode') : t('header.compactMode')}
-          className={`p-1.5 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition border border-transparent ${
-            isCompact ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' : ''
+          className={`p-1.5 rounded-md text-muted hover:text-app hover:bg-surface transition border border-transparent ${
+            isCompact ? 'bg-accent-subtle text-accent border-accent/40' : ''
           }`}
         >
           {isCompact ? <Maximize2 className="w-3.5 h-3.5" /> : <Minimize2 className="w-3.5 h-3.5" />}
@@ -109,11 +145,11 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onTogglePin}
           title={isPinned ? t('header.unpinWindow') : t('header.pinWindow')}
-          className={`p-1.5 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition border border-transparent ${
-            isPinned ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' : ''
+          className={`p-1.5 rounded-md text-muted hover:text-app hover:bg-surface transition border border-transparent ${
+            isPinned ? 'bg-accent-subtle text-accent border-accent/40' : ''
           }`}
         >
-          <Pin className={`w-3.5 h-3.5 ${isPinned ? 'fill-indigo-400' : ''}`} />
+          <Pin className={`w-3.5 h-3.5 ${isPinned ? 'fill-current text-accent' : ''}`} />
         </button>
       </div>
     </header>
