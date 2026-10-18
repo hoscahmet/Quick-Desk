@@ -1,21 +1,27 @@
 import React from 'react'
-import { Zap, Pin, Minimize2, Maximize2 } from 'lucide-react'
+import { Zap, Pin, Minimize2, Maximize2, Shield, ShieldCheck, Lock } from 'lucide-react'
 import { useTranslation } from '../i18n/LanguageContext'
 
 interface HeaderProps {
   isPinned: boolean
   isCompact: boolean
   isSaving: boolean
+  hasPassword: boolean
   onTogglePin: () => void
   onToggleCompact: () => void
+  onOpenSecurity: () => void
+  onQuickLock: () => void
 }
 
 export const Header: React.FC<HeaderProps> = ({
   isPinned,
   isCompact,
   isSaving,
+  hasPassword,
   onTogglePin,
-  onToggleCompact
+  onToggleCompact,
+  onOpenSecurity,
+  onQuickLock
 }) => {
   const { language, setLanguage, t } = useTranslation()
 
@@ -36,6 +42,30 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="no-drag flex items-center gap-1.5">
+        {/* Quick Lock Button (Visible when password protected) */}
+        {hasPassword && (
+          <button
+            onClick={onQuickLock}
+            title={t('security.lockNow')}
+            className="p-1.5 rounded-md text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition border border-transparent"
+          >
+            <Lock className="w-3.5 h-3.5" />
+          </button>
+        )}
+
+        {/* Security & Password Settings Button */}
+        <button
+          onClick={onOpenSecurity}
+          title={hasPassword ? t('security.settingsTooltip') : t('security.setPasswordTooltip')}
+          className={`p-1.5 rounded-md transition border border-transparent ${
+            hasPassword
+              ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25 hover:bg-emerald-500/20'
+              : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800'
+          }`}
+        >
+          {hasPassword ? <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Shield className="w-3.5 h-3.5" />}
+        </button>
+
         {/* Language Switcher */}
         <div
           className="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5 text-[11px] font-semibold mr-1"
